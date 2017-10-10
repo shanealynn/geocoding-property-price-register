@@ -100,6 +100,7 @@ ggplot(data[, .(price=median(price)), .(month=floor_date(date, 'month'))][order(
   geom_smooth() + 
   geom_point() + 
   scale_y_continuous(labels = comma) +
+  scale_x_date(date_breaks = 'year', date_labels = "%Y") +
   labs(x="Month", y="Median Sale Price", title="Median sale prices countrywide")
 
 # Split median sale price by city and county sales
@@ -109,6 +110,7 @@ ggplot(data[, .(price=median(price)), .(city, month=floor_date(date, 'month'))][
   geom_smooth() + 
   geom_point() + 
   scale_y_continuous(labels = comma) +
+  scale_x_date(date_breaks = 'year', date_labels = "%Y") +
   labs(x="Month", y="Median Sale Price", title="Median sale prices city vs country")
 
 # Examination of individual city sales
@@ -120,7 +122,8 @@ ggplot(data[city_house==TRUE,
   geom_line() + 
   geom_point() + 
   labs(x="Month", y="Median Sale Price (€)", title="Median sale prices per city") +
-  scale_y_continuous(labels=comma)
+  scale_y_continuous(labels=comma) + 
+  scale_x_date(date_breaks = 'year', date_labels = "%Y")
 
 # Place with most sales, least sales.
 ggplot(data[, .(.N), .(electoral_district, ppr_county)][order(-N)][1:10], 
