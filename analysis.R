@@ -2,6 +2,7 @@ library(data.table)
 library(ggplot2)
 library(dplyr)
 library(lubridate)
+library(rgdal)
 library(ggmap)
 library(scales)
 # Quick analysis of geocoded data - show some possibilities using dplr
@@ -144,3 +145,11 @@ ggplot(data[electoral_district %in% ed_with_25_sales$electoral_district,
        title="Most expensive electoral districts", fill="County") +
   theme(axis.text.x = element_text(angle=45, hjust=1)) +
   scale_y_continuous(labels=comma)
+
+# Map of Dublin with the ED lines and the points for sales
+# you have to "fortify" the SHP polygons for this.
+
+# Filter the map data to get Dublin:
+shp <- readOGR('Census2011_Small_Areas_generalised20m/small_areas_gps.shp')
+
+

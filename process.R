@@ -5,6 +5,7 @@
 library(data.table)
 library(ggplot2)
 library(stringr)
+library(rgdal)
 library(maptools)
 library(sp)
 library(lubridate)
