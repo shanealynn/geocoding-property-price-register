@@ -150,6 +150,19 @@ ggplot(data[electoral_district %in% ed_with_25_sales$electoral_district,
 # you have to "fortify" the SHP polygons for this.
 
 # Filter the map data to get Dublin:
-shp <- readOGR('Census2011_Small_Areas_generalised20m/small_areas_gps.shp')
+shp <- readOGR('Census2011_Electoral_Divisions_generalised20m/electoral_divisions_gps.shp')
+# we only want the shapes for the dublin area for this example
+dublin_counties <- c("Fingal", "Dn Laoghaire-Rathdown", "Dublin City", 
+                     "South Dublin", "Kildare County", "Wicklow County")
+subset <- shp[as.character(shp@data$COUNTYNAME) %in% 
+                dublin_counties, ]
+mapdata <- fortify(subset)
 
+data[, capped_price := price]
+data[price > 1000000, capped_price := 1000000]
+ggmap(get_map('Dublin, Ireland', zoom=12), extent = 'device') + 
+  geom_polygon(data=mapdata, aes(x=long, y=lat, group=group), fill='grey', alpha=0.4, color='white') +
+  geom_point(data=data[geo_county %in% dublin_counties & year==2017 & !is.na(latitude)], 
+             aes(x=longitude, y=latitude, colour=capped_price)) +
+  scale_color_continuous(label=comma)
 
